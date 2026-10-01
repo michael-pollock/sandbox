@@ -1,0 +1,20 @@
+{
+  "name": "sillifier",
+  "version": "1.0.0",
+  "description": "Replaces vowels with funnier vowels",
+  "keywords": [
+    "silly",
+    "sillifier",
+    "vowels",
+    "vowel",
+    "replacement",
+    "irritableVowelSyndrome"
+  ],
+  "license": "MIT",
+  "author": "Michael Pollock",
+  "type": "module",
+  "main": "sillifier.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
