@@ -14,49 +14,47 @@ def hanoi_solver(num_disks):
 
     moves = [get_move_str(towers)]
 
-    ui = 0
+    unstack_index = 0
 
     i = 0
-    max_iter = 10000
+    max_iter = (2 ** num_disks) - 1
+    print(f'{i}: {moves[-1]}')
     while len(towers[2]) < num_disks and i < max_iter:
-        if ui == 0 and len(towers[ui]) > 0:
-            if len(towers[ui]) % 2 == 1:
-                ti, si = 2, 1
+        if unstack_index == 0 and len(towers[unstack_index]) > 0:
+            if len(towers[unstack_index]) % 2 == 1:
+                target_index, spare_index = 2, 1
             else:
-                ti, si = 1, 2
-        elif ui == 1 and len(towers[ui]) > 0:
-            if len(towers[ui]) % 2 == 1:
-                ti, si = 2, 0
+                target_index, spare_index = 1, 2
+        elif unstack_index == 1 and len(towers[unstack_index]) > 0:
+            if len(towers[unstack_index]) % 2 == 1:
+                target_index, spare_index = 2, 0
             else:
-                ti, si = 0, 2
-        elif ui == 2 and len(towers[ui]) > 0:
-            if len(towers[ui]) % 2 == 1:
-                ti, si = 1, 0
+                target_index, spare_index = 0, 2
+        elif unstack_index == 2 and len(towers[unstack_index]) > 0:
+            if len(towers[unstack_index]) % 2 == 1:
+                target_index, spare_index = 1, 0
             else:
-                ti, si = 0, 1
-        i += 1
-        print(f'ui: {ui}, ti: {ti}, si: {si}')
-        unstack = towers[ui]
-        target = towers[ti]
-        spare = towers[si]
+                target_index, spare_index = 0, 1
+        unstack = towers[unstack_index]
+        target = towers[target_index]
+        spare = towers[spare_index]
 
         if unstack and (not target or target[-1] > unstack[-1]):
+            i += 1
             target.append(unstack.pop())
             moves.append(get_move_str(towers))
-            print(moves[-1])
+            print(f'{i}: {moves[-1]}')
             continue
         
         if not unstack:
-            print(f'ui: {ui} is empty, switching to si: {si}')
-            ui = si
+            unstack_index = spare_index
             continue
         
         if target and target[-1] < unstack[-1]:
-            print(f'Cannot move from ui: {ui} to ti: {ti}, switching to ti: {ti}')
-            ui = ti
+            unstack_index = target_index
     print(f'solved in {len(moves) - 1} iterations')
     return '\n'.join(moves)
         
 if __name__ == '__main__':
-    hanoi = hanoi_solver(10)
-    # print(hanoi)
+    hanoi = hanoi_solver(5)
+    print(hanoi)
