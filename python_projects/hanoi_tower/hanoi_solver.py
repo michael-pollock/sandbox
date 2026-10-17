@@ -15,12 +15,25 @@ def hanoi_solver(num_disks):
     moves = [get_move_str(towers)]
 
     ui = 0
-    ti = 1 if len(towers[ui]) % 2 == 1 else 2
-    si = 2 if len(towers[ui]) % 2 == 1 else 1
 
     i = 0
-    max_iter = 5
+    max_iter = 10000
     while len(towers[2]) < num_disks and i < max_iter:
+        if ui == 0 and len(towers[ui]) > 0:
+            if len(towers[ui]) % 2 == 1:
+                ti, si = 2, 1
+            else:
+                ti, si = 1, 2
+        elif ui == 1 and len(towers[ui]) > 0:
+            if len(towers[ui]) % 2 == 1:
+                ti, si = 2, 0
+            else:
+                ti, si = 0, 2
+        elif ui == 2 and len(towers[ui]) > 0:
+            if len(towers[ui]) % 2 == 1:
+                ti, si = 1, 0
+            else:
+                ti, si = 0, 1
         i += 1
         print(f'ui: {ui}, ti: {ti}, si: {si}')
         unstack = towers[ui]
@@ -30,20 +43,20 @@ def hanoi_solver(num_disks):
         if unstack and (not target or target[-1] > unstack[-1]):
             target.append(unstack.pop())
             moves.append(get_move_str(towers))
-            temp = ti
-            ti = si
-            si = temp
             print(moves[-1])
             continue
         
         if not unstack:
-            pass
+            print(f'ui: {ui} is empty, switching to si: {si}')
+            ui = si
+            continue
         
         if target and target[-1] < unstack[-1]:
-            temp = ui
+            print(f'Cannot move from ui: {ui} to ti: {ti}, switching to ti: {ti}')
             ui = ti
-            ti = si
-            si = temp
+    print(f'solved in {len(moves) - 1} iterations')
+    return '\n'.join(moves)
         
 if __name__ == '__main__':
-    hanoi = hanoi_solver(2)
+    hanoi = hanoi_solver(10)
+    # print(hanoi)
